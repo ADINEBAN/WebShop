@@ -37,6 +37,10 @@ Note: main.js, All Default Scripting Languages For This Theme Included In This F
 		26. WOW
 
 -----------------------------------------------------------------------------------*/
+;
+
+
+
 (function ($) {
 	"use Strict";
 /*----------------------------------------*/

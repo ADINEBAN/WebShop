@@ -6,10 +6,19 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\UploadController;
 
+use App\Http\Controllers\Page\AboutController;
+use App\Http\Controllers\Page\BlogController;
+use App\Http\Controllers\Page\CartController;
+use App\Http\Controllers\Page\CheckOutController;
+use App\Http\Controllers\Page\ContactController;
+use App\Http\Controllers\Page\HomeCotroller;
+use App\Http\Controllers\Page\ShopController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\Users\LoginController;
 use App\Http\Controllers\Admin\Users\RegisterController;
 use App\Http\Controllers\MainCotroller;
+use App\Http\Controllers\Page\DetailsController;
+use App\Http\Controllers\Page\WishlistController;
 use App\Http\Middleware\EnsureUserIsAuthenticated;
 
 
@@ -18,8 +27,32 @@ Route::get('admin/user/login', [LoginController::class, 'index'])->name('login')
 Route::post('admin/user/login/store',[LoginController::class, 'store']);
 Route::post('admin/user/register/store',[RegisterController::class, 'register'])->name('register');
 
+#pages
+Route::prefix('/')->group(function () {
+    Route::get('/', [HomeCotroller::class, 'index'])->name('index');
+    Route::get('/shop', [ShopController::class, 'index'])->name('shop');
+    Route::get('/blog', [BlogController::class, 'details'])->name('blog.details');
+    Route::get('/cart', [CartController::class, 'index'])->name('cart');
+    Route::get('/cart/{id}', [CartController::class, 'add'])->name('cart.add');
 
-Route::get('/', [MainCotroller::class, 'index'])->name('index');
+    Route::get('/about', [AboutController::class, 'index'])->name('about');
+    Route::get('/contact', [ContactController::class, 'index'])->name('contact');
+    Route::get('/search', [ShopController::class, 'search'])->name('search');
+    Route::get('/product-details/{id}', [DetailsController::class, 'details'])->name('details');
+    Route::get('/checkout', [CheckOutController::class, 'index'])->name('checkout');
+
+    #wishlist
+    Route::prefix('wishlist')->group(function () {
+        Route::get('/', [WishlistController::class, 'index'])->name('wishlist');
+        Route::post('/store/{id}', [WishlistController::class, 'store'])->name('wishlist.store');
+        Route::get('/remove', [WishlistController::class, 'remove'])->name('wishlist.remove');
+    });
+    
+
+
+});
+
+
 
 Route::middleware('admin')->group(function () {
      
